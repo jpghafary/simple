@@ -16,8 +16,6 @@ import search.simple.utils.Constants;
  */
 public class Main 
 {
-	private SearchEngine engine;
-	
 	/**
 	 * This is the start method containing the console application and the user interaction
 	 * @param args
@@ -33,7 +31,7 @@ public class Main
 		else if(!root.isDirectory())
 			throw new IllegalArgumentException("The specified path is not a directory.");
 		
-		engine = new SearchEngine(args[0]);
+		SearchEngine engine = new SearchEngine(args[0]);
 		
 		try(Scanner keyBoard = new Scanner(System.in)){
 			while(true) {
@@ -44,7 +42,7 @@ public class Main
 				
 				SearchQuery query = new SearchQuery(line);
 				List<SearchResult> results = engine.search(query);
-				if(results.size() == 0)
+				if(results.isEmpty())
 					System.out.println(Constants.NO_MATCHES_FOUND);
 				else
 					results.forEach(System.out::println);

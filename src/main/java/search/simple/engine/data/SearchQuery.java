@@ -9,7 +9,7 @@ package search.simple.engine.data;
  *
  */
 public class SearchQuery {
-	private String searchQuery;
+	private String queryString;
 	private int wordPercentage;
 	private String[] searchArray;
 	
@@ -20,7 +20,7 @@ public class SearchQuery {
 	 */
 	public SearchQuery(String searchQuery) {
 		super();
-		this.searchQuery = searchQuery;
+		this.queryString = searchQuery;
 		this.wordPercentage = calculateWordPercentage();
 		this.searchArray = searchQuery.split(" ");
 	}
@@ -30,7 +30,7 @@ public class SearchQuery {
 	 * @return double the world percentage
 	 */
 	private int calculateWordPercentage() {
-		return Math.round(100/this.searchQuery.split(" ").length);
+		return 100/this.queryString.split(" ").length;
 	}
 
 	/**
@@ -38,15 +38,15 @@ public class SearchQuery {
 	 * @return
 	 */
 	public String getSearchQuery() {
-		return searchQuery;
+		return queryString;
 	}
 	
 	/**
 	 * searchQuery setter
-	 * @param searchQuery
+	 * @param queryString
 	 */
-	public void setSearchQuery(String searchQuery) {
-		this.searchQuery = searchQuery;
+	public void setSearchQuery(String queryString) {
+		this.queryString = queryString;
 	}
 	
 	/**
@@ -86,6 +86,6 @@ public class SearchQuery {
 	 */
 	@Override
 	public String toString() {
-		return this.searchQuery + ":" + this.wordPercentage ;
+		return this.queryString + ":" + this.wordPercentage ;
 	}
 }
