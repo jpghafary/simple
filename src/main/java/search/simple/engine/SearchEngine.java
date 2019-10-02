@@ -36,7 +36,7 @@ public class SearchEngine {
 			int totalPercentage = 0;
 			
 			for(String word : query.getSearchArray()) {
-				String lineResult = fileContent.stream().filter(s -> s.toLowerCase().contains(word.toLowerCase())).findAny().orElse(null);
+				String lineResult = checkIfWordExists(word, fileContent);
 				if(lineResult != null)
 					totalPercentage += query.getWordPercentage();
 			}
@@ -52,6 +52,10 @@ public class SearchEngine {
 			results = filterResults();
 		}
 		return results;
+	}
+	
+	private String checkIfWordExists(String word, List<String> fileContent) {
+		return fileContent.stream().filter(s -> s.toLowerCase().contains(word.toLowerCase())).findAny().orElse(null);
 	}
 	
 	/**
