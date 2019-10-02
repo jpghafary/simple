@@ -55,26 +55,24 @@ public class SearchEngine {
 				@Override
                 public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
 					ArrayList<String> fileContent = readFileContent(path);
-					if(fileContent != null)
+					if(!fileContent.isEmpty())
 						index.put(path.getFileName().toString(), fileContent);
 					return FileVisitResult.CONTINUE;
 				}
 
 				private ArrayList<String> readFileContent(Path zFile) {
-					if(!zFile.toFile().isFile())
-						return null;
+					ArrayList<String> list = new ArrayList<String>();
 					
-					ArrayList<String> list = null;
 					try (Stream<String> stream = Files.lines(zFile, StandardCharsets.UTF_8)) {
 						list = (ArrayList<String>) stream.collect(Collectors.toList());
 					}catch(IOException e) {
-						e.printStackTrace();
+						System.out.println("Unable to read : " + zFile.getFileName().toString());
 					}
 					return list;
 				}
 			});
 		}catch(IOException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		
 		System.out.println(this.index.keySet().size() + " files read in directory " + this.directoryPath);
