@@ -41,7 +41,7 @@ public class Main
 					break;
 				
 				SearchQuery query = new SearchQuery(line);
-				List<SearchResult> results = engine.search(query);
+				List<SearchResult> results = engine.searchDictionary(query);
 				if(results.isEmpty())
 					System.out.println(Constants.NO_MATCHES_FOUND);
 				else
