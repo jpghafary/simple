@@ -1,11 +1,16 @@
 package search.simple.engine;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,17 +49,34 @@ public class SearchEngine {
 	private void populateIndexes() {
 		if(index == null)
 			index = new HashMap<String, ArrayList<String>>();
-		
-		File root = new File(directoryPath);
-		for(File file : root.listFiles()) {
-			ArrayList<String> list = new ArrayList<String>();
-			try(Stream<String> stream = Files.lines(Paths.get(file.getCanonicalPath()), StandardCharsets.UTF_8)){
-				list = (ArrayList<String>) stream.collect(Collectors.toList()); 
-				index.put(file.getName(), list);
-			}catch(IOException e) {
-				System.out.println("Unable to read file = " + file.getName() + "\nReason: " + e.getMessage());
-			}
+
+		try {
+			Files.walkFileTree(Paths.get(directoryPath), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+				@Override
+                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+					ArrayList<String> fileContent = readFileContent(path);
+					if(fileContent != null)
+						index.put(path.getFileName().toString(), fileContent);
+					return FileVisitResult.CONTINUE;
+				}
+
+				private ArrayList<String> readFileContent(Path zFile) {
+					if(!zFile.toFile().isFile())
+						return null;
+					
+					ArrayList<String> list = null;
+					try (Stream<String> stream = Files.lines(zFile, StandardCharsets.UTF_8)) {
+						list = (ArrayList<String>) stream.collect(Collectors.toList());
+					}catch(IOException e) {
+						e.printStackTrace();
+					}
+					return list;
+				}
+			});
+		}catch(IOException e) {
+			e.printStackTrace();
 		}
+		
 		System.out.println(this.index.keySet().size() + " files read in directory " + this.directoryPath);
 	}
 	
