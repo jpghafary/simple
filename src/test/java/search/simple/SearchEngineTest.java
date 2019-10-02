@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import search.simple.engine.SearchEngine;
@@ -27,17 +28,19 @@ public class SearchEngineTest {
 		engine = new SearchEngine(directory);
 	}
 
+	@Ignore
 	@Test
 	public void TestExistingWord() {
 		SearchQuery query = new SearchQuery("void ifile main");
-		List<SearchResult> results = engine.search(query);
+		List<SearchResult> results = engine.searchDictionary(query);
 		results.forEach(System.out::println);
 	}
 	
+	@Ignore
 	@Test
 	public void TextNoneExistingWord() {
 		SearchQuery query = new SearchQuery("jobess");
-		List<SearchResult> results = engine.search(query);
+		List<SearchResult> results = engine.searchDictionary(query);
 		results.forEach(System.out::println);
 	}
 

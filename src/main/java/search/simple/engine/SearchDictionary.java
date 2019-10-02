@@ -16,15 +16,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SearchDictionary {
-	private String directoryPath;
+	private String rootDirectoryPath;
 	private HashMap<String, ArrayList<String>> indexedFileContents;
 
 	/**
 	 * Default constructor
-	 * @param directoryPath
+	 * @param rootDirectoryPath
 	 */
-	public SearchDictionary(String directoryPath) {
-		this.directoryPath = directoryPath;
+	public SearchDictionary(String rootDirectoryPath) {
+		this.rootDirectoryPath = rootDirectoryPath;
 		populate();
 	}
 	
@@ -36,7 +36,7 @@ public class SearchDictionary {
 			indexedFileContents = new HashMap<String, ArrayList<String>>();
 
 		try {
-			Files.walkFileTree(Paths.get(directoryPath), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+			Files.walkFileTree(Paths.get(rootDirectoryPath), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
 				@Override
                 public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
 					ArrayList<String> fileContent = readFileContent(path);
@@ -60,15 +60,15 @@ public class SearchDictionary {
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println(this.indexedFileContents.keySet().size() + " files read in directory " + this.directoryPath);
+		System.out.println(this.indexedFileContents.keySet().size() + " files read in directory " + this.rootDirectoryPath);
 	}
 
 	public String getDirectoryPath() {
-		return directoryPath;
+		return rootDirectoryPath;
 	}
 	
-	public void setDirectoryPath(String directoryPath) {
-		this.directoryPath = directoryPath;
+	public void setDirectoryPath(String rootDirectoryPath) {
+		this.rootDirectoryPath = rootDirectoryPath;
 	}
 	
 	public HashMap<String, ArrayList<String>> getIndexedFileContents() {
