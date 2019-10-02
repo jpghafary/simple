@@ -12,12 +12,13 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SearchDictionary {
 	private String rootDirectoryPath;
-	private HashMap<String, ArrayList<String>> indexedFileContents;
+	private Map<String, ArrayList<String>> indexedFileContents;
 
 	/**
 	 * Default constructor
@@ -71,11 +72,11 @@ public class SearchDictionary {
 		this.rootDirectoryPath = rootDirectoryPath;
 	}
 	
-	public HashMap<String, ArrayList<String>> getIndexedFileContents() {
+	public Map<String, ArrayList<String>> getIndexedFileContents() {
 		return indexedFileContents;
 	}
 
-	public void setIndex(HashMap<String, ArrayList<String>> indexedFileContents) {
+	public void setIndex(Map<String, ArrayList<String>> indexedFileContents) {
 		this.indexedFileContents = indexedFileContents;
 	}
 
