@@ -32,7 +32,7 @@ public class SearchEngine {
 		results = new ArrayList<>();
 		
 		this.dictionary.getIndexedFileContents().keySet().forEach(key -> {
-			ArrayList<String> fileContent = this.dictionary.getIndexedFileContents().get(key);
+			List<String> fileContent = this.dictionary.getIndexedFileContents().get(key);
 			int totalPercentage = 0;
 			
 			for(String word : query.getSearchArray()) {

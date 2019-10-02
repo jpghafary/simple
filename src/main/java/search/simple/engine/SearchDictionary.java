@@ -12,13 +12,14 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SearchDictionary {
 	private String rootDirectoryPath;
-	private Map<String, ArrayList<String>> indexedFileContents;
+	private Map<String, List<String>> indexedFileContents;
 
 	/**
 	 * Default constructor
@@ -34,28 +35,16 @@ public class SearchDictionary {
 	 */
 	private void populate() {
 		if(indexedFileContents == null)
-			indexedFileContents = new HashMap<String, ArrayList<String>>();
+			indexedFileContents = new HashMap<String, List<String>>();
 
 		try {
 			Files.walkFileTree(Paths.get(rootDirectoryPath), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
 				@Override
                 public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-					ArrayList<String> fileContent = readFileContent(path);
+					List<String> fileContent = readFileContent(path);
 					if(!fileContent.isEmpty())
 						indexedFileContents.put(path.getFileName().toString(), fileContent);
 					return FileVisitResult.CONTINUE;
-				}
-
-				//
-				private ArrayList<String> readFileContent(Path zFile) {
-					ArrayList<String> list = new ArrayList<String>();
-					
-					try (Stream<String> stream = Files.lines(zFile, StandardCharsets.UTF_8)) {
-						list = (ArrayList<String>) stream.collect(Collectors.toList());
-					}catch(IOException e) {
-						System.out.println("Unable to read : " + zFile.getFileName().toString());
-					}
-					return list;
 				}
 			});
 		}catch(IOException e) {
@@ -64,6 +53,17 @@ public class SearchDictionary {
 		System.out.println(this.indexedFileContents.keySet().size() + " files read in directory " + this.rootDirectoryPath);
 	}
 
+	private List<String> readFileContent(Path zFile) {
+		List<String> list = new ArrayList<String>();
+		
+		try (Stream<String> stream = Files.lines(zFile, StandardCharsets.UTF_8)) {
+			list = (ArrayList<String>) stream.collect(Collectors.toList());
+		}catch(IOException e) {
+			System.out.println("Unable to read : " + zFile.getFileName().toString());
+		}
+		return list;
+	}
+	
 	public String getDirectoryPath() {
 		return rootDirectoryPath;
 	}
@@ -72,11 +72,11 @@ public class SearchDictionary {
 		this.rootDirectoryPath = rootDirectoryPath;
 	}
 	
-	public Map<String, ArrayList<String>> getIndexedFileContents() {
+	public Map<String, List<String>> getIndexedFileContents() {
 		return indexedFileContents;
 	}
 
-	public void setIndex(Map<String, ArrayList<String>> indexedFileContents) {
+	public void setIndex(Map<String, List<String>> indexedFileContents) {
 		this.indexedFileContents = indexedFileContents;
 	}
 
