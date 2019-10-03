@@ -8,11 +8,17 @@ import search.simple.engine.data.SearchQuery;
 import search.simple.engine.data.SearchResult;
 import search.simple.utils.Constants;
 
-public class UserInterface {
+public class ConsoleApplication {
+	private String directoryPath;
 	private SearchEngine engine;
-
-	public UserInterface() {
+	
+	public ConsoleApplication() {
 		super();
+	}
+	
+	public void init(String directoryPath) {
+		this.setDirectoryPath(directoryPath);
+		engine = new SearchEngine(directoryPath);
 	}
 	
 	public void start() {
@@ -38,12 +44,12 @@ public class UserInterface {
 			results.forEach(System.out::println);
 	}
 
-	public SearchEngine getEngine() {
-		return engine;
+	public String getDirectoryPath() {
+		return directoryPath;
 	}
 
-	public void setEngine(SearchEngine engine) {
-		this.engine = engine;
+	public void setDirectoryPath(String directoryPath) {
+		this.directoryPath = directoryPath;
 	}
 	
 }

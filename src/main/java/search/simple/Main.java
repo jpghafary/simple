@@ -1,14 +1,8 @@
 package search.simple;
 
 import java.io.File;
-import java.util.List;
-import java.util.Scanner;
 
-import search.simple.engine.SearchEngine;
-import search.simple.engine.data.SearchQuery;
-import search.simple.engine.data.SearchResult;
-import search.simple.ui.UserInterface;
-import search.simple.utils.Constants;
+import search.simple.ui.ConsoleApplication;
 
 /**
  * Application's main class
@@ -32,9 +26,8 @@ public class Main
 		else if(!root.isDirectory())
 			throw new IllegalArgumentException("The specified path is not a directory.");
 		
-		SearchEngine engine = new SearchEngine(args[0]);
-		UserInterface console = new UserInterface();
-		console.setEngine(engine);
+		ConsoleApplication console = new ConsoleApplication();
+		console.init(args[0]);
 		console.start();
 	}
 	
