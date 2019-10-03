@@ -39,13 +39,18 @@ public class ConsoleApplication {
 				
 				SearchQuery query = new SearchQuery(line);
 				List<SearchResult> results = engine.searchDictionary(query);
-				sortResults(results);
-				filterResults(results);
-				printResults(results);
+				handleResults(results);
 			}
 		}
 	}
 	
+	private void handleResults(List<SearchResult> results) {
+		sortResults(results);
+		filterResults(results);
+		
+		printResults(results);
+	}
+
 	/**
 	 * @param results
 	 * @return
