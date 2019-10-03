@@ -15,6 +15,18 @@ public class Main
 	 * @param args
 	 */
 	private void start(String[] args) throws IllegalArgumentException {
+		validateAppArgument(args);
+		
+		ConsoleApplication console = new ConsoleApplication();
+		console.init(new File(args[0]));
+		console.start();
+	}
+	
+	/**
+	 * 
+	 * @param args
+	 */
+	private void validateAppArgument(String[] args) {
 		if(args.length == 0)
 			throw new IllegalArgumentException("No directory given to index");
 		else if(args.length > 1)
@@ -25,12 +37,8 @@ public class Main
 			throw new IllegalArgumentException("The specified directory does not exist.");
 		else if(!rootDirectory.isDirectory())
 			throw new IllegalArgumentException("The specified path is not a directory.");
-		
-		ConsoleApplication console = new ConsoleApplication();
-		console.init(rootDirectory);
-		console.start();
 	}
-	
+
 	/***
 	 * Main method
 	 * @param args
