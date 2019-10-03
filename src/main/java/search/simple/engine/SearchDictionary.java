@@ -22,14 +22,15 @@ public class SearchDictionary {
 	private File rootDirectory;
 	private Map<String, List<String>> indexedFileContents;
 
-	/**
-	 * Default constructor
-	 * @param rootDirectory
-	 */
 	public SearchDictionary(File rootDirectory) {
 		this.rootDirectory = rootDirectory;
 		initIndexFileContents();
 		populateDictionary();
+	}
+	
+	private void initIndexFileContents() {
+		if(indexedFileContents == null)
+			indexedFileContents = new HashMap<String, List<String>>();
 	}
 	
 	private void populateDictionary() {
@@ -38,6 +39,10 @@ public class SearchDictionary {
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
 		}
+		printFinalResults();
+	}
+
+	private void printFinalResults() {
 		System.out.println(this.indexedFileContents.keySet().size() + " files read in directory " + this.rootDirectory);
 	}
 
@@ -53,11 +58,6 @@ public class SearchDictionary {
 		return simpleFileVisitor;
 	}
 	
-	private void initIndexFileContents() {
-		if(indexedFileContents == null)
-			indexedFileContents = new HashMap<String, List<String>>();
-	}
-
 	private void addToDictionary(Path path) {
 		List<String> fileContent = readFileContent(path);
 		if(!fileContent.isEmpty())
