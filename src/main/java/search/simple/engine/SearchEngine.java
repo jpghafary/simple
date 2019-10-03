@@ -29,20 +29,27 @@ public class SearchEngine {
 	 * @return List of results
 	 */
 	public List<SearchResult> searchDictionary(SearchQuery query) {
-		results = new ArrayList<>();
+		resetPreviousResults();
 		
 		this.dictionary.getIndexedFileContents().entrySet().stream().parallel().forEach(entry -> {
 			List<String> fileContent = entry.getValue();
-			int totalPercentange = calculateTotalPercentage(query, fileContent);
-			
-			if(totalPercentange != 0)
-				results.add(new SearchResult(entry.getKey(), totalPercentange));
+			int totalPercentage = calculateTotalPercentage(query, fileContent);
+			appendResult(totalPercentage, entry.getKey());
 		});
 		
-		results = sortResults();
-		results = filterResults();
+		sortResults();
+		filterResults();
 		
 		return results;
+	}
+	
+	private void resetPreviousResults() {
+		results = new ArrayList<>();
+	}
+	
+	private void appendResult(int totalPercentage, String fileName) {
+		if(totalPercentage != 0)
+			results.add(new SearchResult(fileName, totalPercentage));
 	}
 	
 	/**
@@ -74,16 +81,15 @@ public class SearchEngine {
 	 * @param results
 	 * @return
 	 */
-	private List<SearchResult> sortResults() {
+	private void sortResults() {
 		this.results.sort((result1, result2) -> result2.getTotalPercentage() - result1.getTotalPercentage());
-		return results;
 	}
 	
 	/**
 	 * @param results
 	 * @return
 	 */
-	private List<SearchResult> filterResults() {
-		return this.results.stream().limit(Constants.RESULT_SEARCH_LIMIT).collect(Collectors.toList());
+	private void filterResults() {
+		this.results = this.results.stream().limit(Constants.RESULT_SEARCH_LIMIT).collect(Collectors.toList());
 	}
 }
