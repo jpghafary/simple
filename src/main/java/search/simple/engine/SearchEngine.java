@@ -31,13 +31,12 @@ public class SearchEngine {
 	public List<SearchResult> searchDictionary(SearchQuery query) {
 		results = new ArrayList<>();
 		
-		this.dictionary.getIndexedFileContents().keySet().forEach(key -> {
-			List<String> fileContent = this.dictionary.getIndexedFileContents().get(key);
-			int totalPercentage = calculateTotalPercentage(query, fileContent);
+		this.dictionary.getIndexedFileContents().entrySet().stream().parallel().forEach(entry -> {
+			List<String> fileContent = entry.getValue();
+			int totalPercentange = calculateTotalPercentage(query, fileContent);
 			
-			if(totalPercentage != 0) {
-				results.add(new SearchResult(key, totalPercentage));
-			}
+			if(totalPercentange != 0)
+				results.add(new SearchResult(entry.getKey(), totalPercentange));
 		});
 		
 		results = sortResults();
@@ -52,8 +51,7 @@ public class SearchEngine {
 		int totalPercentage = 0;
 		for(String word : query.getSearchArray()) {
 			String line = checkIfWordExists(word, fileContent);
-			if(line != null)
-				totalPercentage += query.getWordPercentage();
+			totalPercentage += (line != null) ? query.getWordPercentage() : 0;
 		}
 		return totalPercentage;
 	}
