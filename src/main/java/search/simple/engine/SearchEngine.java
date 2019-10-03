@@ -3,11 +3,9 @@ package search.simple.engine;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import search.simple.engine.data.SearchQuery;
 import search.simple.engine.data.SearchResult;
-import search.simple.utils.Constants;
 
 /**
  * @author Jean-Pierre El Ghafary
@@ -36,10 +34,6 @@ public class SearchEngine {
 			int totalPercentage = calculateTotalPercentage(query, fileContent);
 			appendResult(totalPercentage, entry.getKey());
 		});
-		
-		sortResults();
-		filterResults();
-		
 		return results;
 	}
 	
@@ -75,21 +69,5 @@ public class SearchEngine {
 	 */
 	private String checkIfWordExists(String word, List<String> fileContent) {
 		return fileContent.stream().filter(s -> s.toLowerCase().contains(word.toLowerCase())).findAny().orElse(null);
-	}
-	
-	/**
-	 * @param results
-	 * @return
-	 */
-	private void sortResults() {
-		this.results.sort((result1, result2) -> result2.getTotalPercentage() - result1.getTotalPercentage());
-	}
-	
-	/**
-	 * @param results
-	 * @return
-	 */
-	private void filterResults() {
-		this.results = this.results.stream().limit(Constants.RESULT_SEARCH_LIMIT).collect(Collectors.toList());
 	}
 }
