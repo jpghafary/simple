@@ -14,10 +14,9 @@ import search.simple.utils.Constants;
  */
 public class SearchEngine {
 	private SearchDictionary dictionary;
-	private ArrayList<SearchResult> results;
+	private List<SearchResult> results;
 	
 	/**
-	 * Default constructor
 	 * @param directoryPath
 	 */
 	public SearchEngine(String directoryPath) {
@@ -40,13 +39,17 @@ public class SearchEngine {
 		});
 		
 		results = sortResults();
+		results = filterResults();
 		
-		if(this.results.size() > Constants.RESULT_SEARCH_LIMIT) {
-			results = filterResults();
-		}
 		return results;
 	}
 	
+	/**
+	 * 
+	 * @param query
+	 * @param fileContent
+	 * @return
+	 */
 	private int calculateTotalPercentage(SearchQuery query, List<String> fileContent) {
 		int totalPercentage = 0;
 		for(String word : query.getSearchArray()) {
@@ -56,6 +59,12 @@ public class SearchEngine {
 		return totalPercentage;
 	}
 
+	/**
+	 * 
+	 * @param word
+	 * @param fileContent
+	 * @return
+	 */
 	private String checkIfWordExists(String word, List<String> fileContent) {
 		return fileContent.stream().filter(s -> s.toLowerCase().contains(word.toLowerCase())).findAny().orElse(null);
 	}
@@ -64,7 +73,7 @@ public class SearchEngine {
 	 * @param results
 	 * @return
 	 */
-	private ArrayList<SearchResult> sortResults() {
+	private List<SearchResult> sortResults() {
 		this.results.sort((result1, result2) -> result2.getTotalPercentage() - result1.getTotalPercentage());
 		return results;
 	}
@@ -73,7 +82,7 @@ public class SearchEngine {
 	 * @param results
 	 * @return
 	 */
-	private ArrayList<SearchResult> filterResults() {
-		return (ArrayList<SearchResult>) this.results.stream().limit(Constants.RESULT_SEARCH_LIMIT).collect(Collectors.toList());
+	private List<SearchResult> filterResults() {
+		return this.results.stream().limit(Constants.RESULT_SEARCH_LIMIT).collect(Collectors.toList());
 	}
 }

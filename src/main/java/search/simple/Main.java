@@ -7,6 +7,7 @@ import java.util.Scanner;
 import search.simple.engine.SearchEngine;
 import search.simple.engine.data.SearchQuery;
 import search.simple.engine.data.SearchResult;
+import search.simple.ui.UserInterface;
 import search.simple.utils.Constants;
 
 /**
@@ -32,22 +33,9 @@ public class Main
 			throw new IllegalArgumentException("The specified path is not a directory.");
 		
 		SearchEngine engine = new SearchEngine(args[0]);
-		
-		try(Scanner keyBoard = new Scanner(System.in)){
-			while(true) {
-				System.out.print(Constants.DEFAULT_OUTPUT_MESSAGE);
-				final String line = keyBoard.nextLine();
-				if(line.equals(Constants.EXIT_COMMAND))
-					break;
-				
-				SearchQuery query = new SearchQuery(line);
-				List<SearchResult> results = engine.searchDictionary(query);
-				if(results.isEmpty())
-					System.out.println(Constants.NO_MATCHES_FOUND);
-				else
-					results.forEach(System.out::println);
-			}
-		}
+		UserInterface console = new UserInterface();
+		console.setEngine(engine);
+		console.start();
 	}
 	
 	/***
