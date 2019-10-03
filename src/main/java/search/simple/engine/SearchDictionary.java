@@ -35,9 +35,7 @@ public class SearchDictionary {
 	 * Populates the dictionary in a HashMap<FileName as key, FileContent as value>
 	 */
 	private void populate() {
-		if(indexedFileContents == null)
-			indexedFileContents = new HashMap<String, List<String>>();
-
+		initIndexFileContents();
 		try {
 			Files.walkFileTree(Paths.get(rootDirectory.getCanonicalPath()), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
 				@Override
@@ -50,6 +48,11 @@ public class SearchDictionary {
 			System.out.println(e.getMessage());
 		}
 		System.out.println(this.indexedFileContents.keySet().size() + " files read in directory " + this.rootDirectory);
+	}
+
+	private void initIndexFileContents() {
+		if(indexedFileContents == null)
+			indexedFileContents = new HashMap<String, List<String>>();
 	}
 
 	private void addToDictionary(Path path) {
