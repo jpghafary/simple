@@ -33,13 +33,7 @@ public class SearchEngine {
 		
 		this.dictionary.getIndexedFileContents().keySet().forEach(key -> {
 			List<String> fileContent = this.dictionary.getIndexedFileContents().get(key);
-			int totalPercentage = 0;
-			
-			for(String word : query.getSearchArray()) {
-				String lineResult = checkIfWordExists(word, fileContent);
-				if(lineResult != null)
-					totalPercentage += query.getWordPercentage();
-			}
+			int totalPercentage = calculateTotalPercentage(query, fileContent);
 			
 			if(totalPercentage != 0) {
 				results.add(new SearchResult(key, totalPercentage));
@@ -54,6 +48,16 @@ public class SearchEngine {
 		return results;
 	}
 	
+	private int calculateTotalPercentage(SearchQuery query, List<String> fileContent) {
+		int totalPercentage = 0;
+		for(String word : query.getSearchArray()) {
+			String line = checkIfWordExists(word, fileContent);
+			if(line != null)
+				totalPercentage += query.getWordPercentage();
+		}
+		return totalPercentage;
+	}
+
 	private String checkIfWordExists(String word, List<String> fileContent) {
 		return fileContent.stream().filter(s -> s.toLowerCase().contains(word.toLowerCase())).findAny().orElse(null);
 	}
