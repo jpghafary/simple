@@ -42,9 +42,7 @@ public class SearchDictionary {
 			Files.walkFileTree(Paths.get(rootDirectory.getCanonicalPath()), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
 				@Override
                 public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-					List<String> fileContent = readFileContent(path);
-					if(!fileContent.isEmpty())
-						indexedFileContents.put(path.getFileName().toString(), fileContent);
+					addToDictionary(path);
 					return FileVisitResult.CONTINUE;
 				}
 			});
@@ -54,6 +52,12 @@ public class SearchDictionary {
 		System.out.println(this.indexedFileContents.keySet().size() + " files read in directory " + this.rootDirectory);
 	}
 
+	private void addToDictionary(Path path) {
+		List<String> fileContent = readFileContent(path);
+		if(!fileContent.isEmpty())
+			indexedFileContents.put(path.getFileName().toString(), fileContent);
+	}
+	
 	private List<String> readFileContent(Path zFile) {
 		List<String> list = new ArrayList<String>();
 		
