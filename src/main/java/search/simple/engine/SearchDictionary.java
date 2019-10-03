@@ -1,5 +1,6 @@
 package search.simple.engine;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitOption;
@@ -18,15 +19,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SearchDictionary {
-	private String rootDirectoryPath;
+	private File rootDirectory;
 	private Map<String, List<String>> indexedFileContents;
 
 	/**
 	 * Default constructor
-	 * @param rootDirectoryPath
+	 * @param rootDirectory
 	 */
-	public SearchDictionary(String rootDirectoryPath) {
-		this.rootDirectoryPath = rootDirectoryPath;
+	public SearchDictionary(File rootDirectory) {
+		this.rootDirectory = rootDirectory;
 		populate();
 	}
 	
@@ -38,7 +39,7 @@ public class SearchDictionary {
 			indexedFileContents = new HashMap<String, List<String>>();
 
 		try {
-			Files.walkFileTree(Paths.get(rootDirectoryPath), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+			Files.walkFileTree(Paths.get(rootDirectory.getCanonicalPath()), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
 				@Override
                 public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
 					List<String> fileContent = readFileContent(path);
@@ -50,7 +51,7 @@ public class SearchDictionary {
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println(this.indexedFileContents.keySet().size() + " files read in directory " + this.rootDirectoryPath);
+		System.out.println(this.indexedFileContents.keySet().size() + " files read in directory " + this.rootDirectory);
 	}
 
 	private List<String> readFileContent(Path zFile) {
@@ -64,12 +65,12 @@ public class SearchDictionary {
 		return list;
 	}
 	
-	public String getDirectoryPath() {
-		return rootDirectoryPath;
+	public File getRootDirectory() {
+		return rootDirectory;
 	}
 	
-	public void setDirectoryPath(String rootDirectoryPath) {
-		this.rootDirectoryPath = rootDirectoryPath;
+	public void setDirectoryPath(File rootDirectory) {
+		this.rootDirectory = rootDirectory;
 	}
 	
 	public Map<String, List<String>> getIndexedFileContents() {

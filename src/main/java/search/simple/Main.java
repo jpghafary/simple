@@ -12,22 +12,22 @@ import search.simple.ui.ConsoleApplication;
 public class Main 
 {
 	/**
-	 * This is the start method containing the console application and the user interaction
 	 * @param args
 	 */
-	private void start(String[] args) {
+	private void start(String[] args) throws IllegalArgumentException {
 		if(args.length == 0)
 			throw new IllegalArgumentException("No directory given to index");
-		if(args.length > 1)
-			throw new IllegalArgumentException("Too many app arguments:\nMain <path_to_directory>.");
-		File root = new File(args[0]);
-		if(!root.exists())
+		else if(args.length > 1)
+			throw new IllegalArgumentException("Too many arguments:\nMain <path_to_directory>.");
+		
+		File rootDirectory= new File(args[0]);
+		if(!rootDirectory.exists())
 			throw new IllegalArgumentException("The specified directory does not exist.");
-		else if(!root.isDirectory())
+		else if(!rootDirectory.isDirectory())
 			throw new IllegalArgumentException("The specified path is not a directory.");
 		
 		ConsoleApplication console = new ConsoleApplication();
-		console.init(args[0]);
+		console.init(rootDirectory);
 		console.start();
 	}
 	

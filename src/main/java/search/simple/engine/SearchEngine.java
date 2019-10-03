@@ -1,5 +1,6 @@
 package search.simple.engine;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,8 +20,8 @@ public class SearchEngine {
 	/**
 	 * @param directoryPath
 	 */
-	public SearchEngine(String directoryPath) {
-		dictionary = new SearchDictionary(directoryPath);
+	public SearchEngine(File rootDirectory) {
+		dictionary = new SearchDictionary(rootDirectory);
 	}
 	
 	/**

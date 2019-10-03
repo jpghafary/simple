@@ -1,5 +1,6 @@
 package search.simple.ui;
 
+import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,18 +8,16 @@ import search.simple.engine.SearchEngine;
 import search.simple.engine.data.SearchQuery;
 import search.simple.engine.data.SearchResult;
 import search.simple.utils.Constants;
-
+/**
+ * 
+ * @author jpghafary
+ *
+ */
 public class ConsoleApplication {
-	private String directoryPath;
 	private SearchEngine engine;
 	
-	public ConsoleApplication() {
-		super();
-	}
-	
-	public void init(String directoryPath) {
-		this.setDirectoryPath(directoryPath);
-		engine = new SearchEngine(directoryPath);
+	public void init(File rootDirectory) {
+		engine = new SearchEngine(rootDirectory);
 	}
 	
 	public void start() {
@@ -43,13 +42,4 @@ public class ConsoleApplication {
 		else
 			results.forEach(System.out::println);
 	}
-
-	public String getDirectoryPath() {
-		return directoryPath;
-	}
-
-	public void setDirectoryPath(String directoryPath) {
-		this.directoryPath = directoryPath;
-	}
-	
 }

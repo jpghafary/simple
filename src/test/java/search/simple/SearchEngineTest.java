@@ -25,7 +25,7 @@ public class SearchEngineTest {
 		assertTrue("The provided path exists.",root.exists());
 		assertTrue("The provided path is a directory", root.isDirectory());
 		
-		engine = new SearchEngine(directory);
+		engine = new SearchEngine(root);
 	}
 
 	@Ignore
