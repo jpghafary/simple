@@ -3,6 +3,7 @@ package search.simple.engine;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import search.simple.engine.data.SearchQuery;
 import search.simple.engine.data.SearchResult;
@@ -30,11 +31,15 @@ public class SearchEngine {
 		resetPreviousResults();
 		
 		this.dictionary.getIndexedFileContents().entrySet().stream().parallel().forEach(entry -> {
-			List<String> fileContent = entry.getValue();
-			int totalPercentage = calculateTotalPercentage(query, fileContent);
-			appendResult(totalPercentage, entry.getKey());
+			generateSearchResult(query, entry);
 		});
 		return results;
+	}
+
+	private void generateSearchResult(SearchQuery query, Entry<String, List<String>> entry) {
+		List<String> fileContent = entry.getValue();
+		int totalPercentage = calculateTotalPercentage(query, fileContent);
+		appendResult(totalPercentage, entry.getKey());
 	}
 	
 	private void resetPreviousResults() {
