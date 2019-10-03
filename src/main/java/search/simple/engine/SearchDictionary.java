@@ -36,16 +36,8 @@ public class SearchDictionary {
 	 * Populates the dictionary in a HashMap<FileName as key, FileContent as value>
 	 */
 	private void populateDictionary() {
-		SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
-			@Override
-			public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-				addToDictionary(path);
-				return FileVisitResult.CONTINUE;
-			}
-			
-		};
-		
 		try{
+			SimpleFileVisitor<Path> visitor = initSimpleVisitor();
 			Files.walkFileTree(Paths.get(rootDirectory.getCanonicalPath()), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, visitor);
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
@@ -53,6 +45,16 @@ public class SearchDictionary {
 		System.out.println(this.indexedFileContents.keySet().size() + " files read in directory " + this.rootDirectory);
 	}
 
+	private SimpleFileVisitor<Path> initSimpleVisitor(){
+		return new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+				addToDictionary(path);
+				return FileVisitResult.CONTINUE;
+			}
+		};
+	}
+	
 	private void initIndexFileContents() {
 		if(indexedFileContents == null)
 			indexedFileContents = new HashMap<String, List<String>>();
