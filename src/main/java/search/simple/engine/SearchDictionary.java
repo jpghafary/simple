@@ -28,22 +28,25 @@ public class SearchDictionary {
 	 */
 	public SearchDictionary(File rootDirectory) {
 		this.rootDirectory = rootDirectory;
-		populate();
+		initIndexFileContents();
+		populateDictionary();
 	}
 	
 	/**
 	 * Populates the dictionary in a HashMap<FileName as key, FileContent as value>
 	 */
-	private void populate() {
-		initIndexFileContents();
-		try {
-			Files.walkFileTree(Paths.get(rootDirectory.getCanonicalPath()), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
-				@Override
-                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-					addToDictionary(path);
-					return FileVisitResult.CONTINUE;
-				}
-			});
+	private void populateDictionary() {
+		SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+				addToDictionary(path);
+				return FileVisitResult.CONTINUE;
+			}
+			
+		};
+		
+		try{
+			Files.walkFileTree(Paths.get(rootDirectory.getCanonicalPath()), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, visitor);
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
 		}
