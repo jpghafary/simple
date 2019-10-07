@@ -1,6 +1,5 @@
 package search.simple.engine;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -16,14 +15,14 @@ public class SearchEngine {
 	private SearchDictionary dictionary;
 	private List<SearchResult> results;
 	
-	public SearchEngine(File rootDirectory) {
-		dictionary = new SearchDictionary(rootDirectory);
+	public SearchEngine(SearchDictionary dictionary) {
+		this.dictionary = dictionary;
 	}
 	
 	public List<SearchResult> searchDictionary(SearchQuery query) {
 		resetPreviousResults();
 		
-		this.dictionary.getIndexedFileContents().entrySet().stream().parallel().forEach(entry -> generateSearchResult(query, entry));
+		this.dictionary.getIndexedFileContents().entrySet().stream().forEach(entry -> generateSearchResult(query, entry));
 		return results;
 	}
 	

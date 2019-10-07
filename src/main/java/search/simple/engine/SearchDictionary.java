@@ -38,8 +38,9 @@ public class SearchDictionary {
 			Files.walkFileTree(Paths.get(rootDirectory.getCanonicalPath()), EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, getSimpleFileVisitor());
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
+		} finally {
+			printFinalResults();
 		}
-		printFinalResults();
 	}
 	
 	private SimpleFileVisitor<Path> getSimpleFileVisitor(){

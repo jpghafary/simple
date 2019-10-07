@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import search.simple.engine.SearchDictionary;
 import search.simple.engine.SearchEngine;
 import search.simple.engine.data.SearchQuery;
 import search.simple.engine.data.SearchResult;
@@ -22,7 +23,8 @@ public class ConsoleApplication {
 	 * @param rootDirectory
 	 */
 	public void init(File rootDirectory) {
-		engine = new SearchEngine(rootDirectory);
+		SearchDictionary dictionary = new SearchDictionary(rootDirectory);
+		engine = new SearchEngine(dictionary);
 	}
 	
 	/**
