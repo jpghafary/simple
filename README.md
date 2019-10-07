@@ -10,7 +10,6 @@ This development exercise consists of create a Java console application that all
 	+ The user will input a on or more words that will constist his search query.
 	+ The application will display the name of the file containing the user's words along with the presence percentage.
 
-
 ### Source code commentary ###
 
 + The project provided is a maven project.
