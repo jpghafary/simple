@@ -1,5 +1,3 @@
-# Adevinta Back-End Coding Exercise #
-
 This development exercise consists of create a Java console application that allows the user to search a specific string in a list of files provided on application startup.
 
 ## Task ##
@@ -21,7 +19,7 @@ This development exercise consists of create a Java console application that all
 + The application's search engine is found under the packge "search.simple.engine.SearchEngine".
 * The search engine requires 2 objects: 
 	+ SearchQuery: the object containing the user's query
-	+ Search Result: an object returned by the search engine 
+	+ SearchResult: an object returned by the search engine 
 
 ## Important notice ##
 
@@ -30,7 +28,7 @@ This development exercise consists of create a Java console application that all
 
 ## Build and run ##
 
-Since the delivered project is a Maven project, use the below command to build it:
+This is a Maven project, use the below command to build it:
 + To build the application, use the command: `mvn compile`
 + To build the application, use the command: `mvn package`
 + To start the application, use the command: `java -jar simple-0.0.1-SNAPSHOT.jar <directory_path>` where <directory_path> is the desired directory to search.
