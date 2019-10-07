@@ -2,9 +2,9 @@ package search.simple;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.stream.Collectors;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,14 +16,9 @@ public class SearchDictionaryTest {
 	SearchEngineData data;
 	
 	@Before
-	public void Search_Dictionary_Test_Init() {
-		try {
-			data = new SearchEngineData();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}finally {
-			dictionary = new SearchDictionary(data.getRootDirectory());
-		}
+	public void SEARCH_DICTIONARY_TEST_INIT_DATA() {
+		data = new SearchEngineData();
+		dictionary = new SearchDictionary(data.getRootDirectory().getRoot());
 	}
 
 	@Test
@@ -36,5 +31,10 @@ public class SearchDictionaryTest {
 		dictionary.getIndexedFileContents().forEach( (key, value) -> {
 			System.out.println(key + " = " + value.stream().map(Object::toString).collect(Collectors.joining(" ")));
 		});
+	}
+	
+	@After
+	public void SEARCH_DICTIONARY_TEST_DETE_DATA() {
+//		data.delete();
 	}
 }

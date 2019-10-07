@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Before;
@@ -22,15 +21,9 @@ public class SearchEngineTest {
 	
 	@Before
 	public void INIT_SEARCH_ENGINE_TEST() {
-		try {
-			data = new SearchEngineData();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			SearchDictionary dictionary = new SearchDictionary(data.getRootDirectory());
-			engine = new SearchEngine(dictionary);
-		}
+		data = new SearchEngineData();
+		SearchDictionary dictionary = new SearchDictionary(data.getRootDirectory().getRoot());
+		engine = new SearchEngine(dictionary);
 	}
 	
 	@Test

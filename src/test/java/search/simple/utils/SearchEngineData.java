@@ -3,28 +3,40 @@ package search.simple.utils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 
 public class SearchEngineData {
 
-	public static File rootDirectory = new File("testdata");
-	public static File file1 = new File(rootDirectory + "/baseDir/file1.txt");
-	public static File file2 = new File(rootDirectory + "/file2.txt");
-	public static File file3 = new File(rootDirectory + "/baseDir/base/file3.txt");
+	@Rule
+	public TemporaryFolder rootDirectory = new TemporaryFolder();
 	
-	public static String fileContent1 = "This is the content of the first file";
-	public static String fileContent2 = "This is the content of the second file";
-	public static String fileContent3 = "This is the content of the third file";
-	
-	public SearchEngineData() throws IOException {
-		Files.createDirectories(Paths.get("testData/baseDir/base"));
+	public SearchEngineData() {
+		String fileContent1 = "This is the content of the first file";
+		String fileContent2 = "This is the content of the second file";
+		String fileContent3 = "This is the content of the third file";
 		
-		Files.write(Paths.get(file1.getAbsolutePath()), fileContent1.getBytes());
-		Files.write(Paths.get(file2.getAbsolutePath()), fileContent2.getBytes());
-		Files.write(Paths.get(file3.getAbsolutePath()), fileContent3.getBytes());
+		try {
+			rootDirectory.create();
+			
+			File file1 = rootDirectory.newFile("file1.txt");
+			Files.write(Paths.get(file1.getAbsolutePath()), fileContent1.getBytes());
+	
+			File subDir1 = rootDirectory.newFolder("baseDir");
+			Files.write(Paths.get(subDir1 + File.separator +  "file2.txt"), fileContent2.getBytes());
+			
+			Path subDir2 = Files.createDirectories(Paths.get(subDir1 + File.separator + "base"));
+			Files.write(Paths.get(subDir2.toString() + File.separator + "file3.txt"), fileContent3.getBytes());
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public File getRootDirectory() {
+	public TemporaryFolder getRootDirectory() {
 		return rootDirectory;
 	}
 }
